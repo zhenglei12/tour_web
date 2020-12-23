@@ -130,7 +130,9 @@ export default {
     },
     toExport() {
       OrderApi.export(this.R.id).then((res) => {
-        utils.export(res, `订单-${this.R.ordersn}`);
+        utils
+          .export(res, `订单-${this.R.ordersn}`)
+          .then(() => this.$message.success("导出成功"));
       });
     },
     toReject() {

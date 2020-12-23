@@ -325,15 +325,23 @@ export default {
       this.form.trip_info = trip.trip_info;
       console.log(trip, this.form.trip_info);
     },
-    submit() {
-      console.log(this.form);
+    submit(edit = false) {
       this.loading = true;
-      OrderApi.create({ ...this.form })
-        .then(() => {
-          this.$message.success("保存成功");
-          this.reset();
-        })
-        .finally(() => (this.loading = false));
+      if (edit) {
+        return OrderApi.update({ ...this.form })
+          .then(() => {
+            this.$message.success("保存成功");
+            this.reset();
+          })
+          .finally(() => (this.loading = false));
+      } else {
+        return OrderApi.create({ ...this.form })
+          .then(() => {
+            this.$message.success("保存成功");
+            this.reset();
+          })
+          .finally(() => (this.loading = false));
+      }
     },
     reset() {
       this.form = {

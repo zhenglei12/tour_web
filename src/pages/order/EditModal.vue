@@ -63,8 +63,9 @@ export default {
   },
   methods: {
     submit() {
-      this.$refs.edit.submit().then((res) => {
-        console.log(res);
+      this.$refs.edit.submit(true).then(() => {
+        this.$emit("refresh");
+        this.close();
       });
     },
   },

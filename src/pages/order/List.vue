@@ -181,7 +181,9 @@ export default {
   methods: {
     toExport(e) {
       OrderApi.export(e.id).then((res) => {
-        Utils.export(res, `订单-${e.ordersn}`);
+        Utils.export(res, `订单-${e.ordersn}`).then(() =>
+          this.$message.success("导出成功")
+        );
       });
     },
     toDetail(e) {
