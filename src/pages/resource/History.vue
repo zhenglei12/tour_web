@@ -16,6 +16,7 @@
         current: collection.page,
         pageSize: collection.pageSize,
         showSizeChanger: true,
+        showTotal: (total) => `共 ${total} 条数据`,
       }"
       bordered
       rowKey="id"
