@@ -78,7 +78,6 @@ import CusEdit from "./Edit";
 import CusDetail from "./Detail";
 import CusPermission from "./Permission";
 import RoleApi from "../../api/role";
-import { PermissionGroup } from "../../model/Permission";
 
 export default {
   components: {
@@ -113,7 +112,10 @@ export default {
     },
     toManager(e) {
       RoleApi.permissions(e).then((res) => {
-        this.temp = new PermissionGroup(res.list);
+        this.temp = {
+          id: e,
+          permissions: res.list,
+        };
         this.aclVisible = true;
       });
     },

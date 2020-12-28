@@ -60,17 +60,19 @@
       <tr>
         <th class="required">跟团日期</th>
         <td colspan="2">
-          <a-date-picker
+          <!-- <a-date-picker
             v-model="form.up_group_date"
             valueFormat="YYYY-MM-DD"
-          />
+          /> -->
+          {{ form.up_group_date }}
         </td>
         <th class="required">离团日期</th>
         <td colspan="2">
-          <a-date-picker
+          <!-- <a-date-picker
             v-model="form.off_group_date"
             valueFormat="YYYY-MM-DD"
-          />
+          /> -->
+          {{ form.off_group_date }}
         </td>
         <th class="required">人数</th>
         <td>
@@ -351,8 +353,16 @@ export default {
     tripChange() {
       let trip = this.tripList.find((_) => _.id == this.form.t_id);
       if (trip) {
+        let date = trip.trip_info
+          .map((_) => _.date)
+          .sort((a, b) => (a > b ? 1 : -1));
         this.form.area = trip.area;
         this.form.trip_info = trip.trip_info;
+        this.form.up_group_date = date.shift();
+        this.form.off_group_date = date.pop() || this.form.up_group_date;
+      } else {
+        delete this.form.up_group_date;
+        delete this.form.off_group_date;
       }
     },
     submit(edit = false) {

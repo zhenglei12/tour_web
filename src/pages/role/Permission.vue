@@ -27,6 +27,7 @@
           v-model="item.checked"
           :disabled="item.disabled"
           :key="'item-' + index"
+          :title="item.alias"
           class="item"
         >
           {{ item.alias }}
@@ -38,6 +39,7 @@
 
 <script>
 import editMixin from "../../mixins/edit";
+import RoleApi from "../../api/role";
 import PermissionApi from "../../api/permission";
 import { PermissionGroup } from "../../model/Permission";
 
@@ -46,7 +48,6 @@ export default {
   data() {
     return {
       loading: false,
-      form: {},
       allPermission: {},
     };
   },
@@ -54,6 +55,9 @@ export default {
     visible(e) {
       if (e) {
         console.log(this.R);
+        this.R.permissions.forEach((_) => {
+          this.allPermission.changeState(_.name, true);
+        });
       }
     },
   },
@@ -66,10 +70,21 @@ export default {
         this.allPermission = new PermissionGroup(res.list);
       });
     },
-    beforeClose() {},
+    beforeClose() {
+      this.allPermission.each((_) => (_.checked = _.disabled = false));
+    },
     submit() {
-      //   this.loading = true;
-      console.log(this.form);
+      this.loading = true;
+      RoleApi.allot({
+        id: this.R.id,
+        permissions: this.allPermission.getChecked(null, (item) => item.name),
+      })
+        .then((res) => {
+          this.$message.success("保存成功");
+          this.$emit("refresh", res);
+          this.close();
+        })
+        .finally(() => (this.loading = false));
     },
   },
 };

@@ -13,4 +13,5 @@ export default {
     permissions: (id) => http.post('api/role/permission', {
         id
     }),
+    allot: (data) => http.post('api/role/add/permission', data),
 }
