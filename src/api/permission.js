@@ -1,7 +1,7 @@
 import http from "../libs/http";
 
 export default {
-    all: () => http.post('permission/all'),
+    all: () => http.post('api/permission/all'),
     remove: (id) => http.post('api/permission/delete', {
         id
     }),

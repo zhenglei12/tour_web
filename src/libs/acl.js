@@ -1,12 +1,14 @@
 import LoginApi from '../api/login';
+import {
+    PermissionGroup
+} from '../model/Permission';
 
-var _aclMap;
 var _pending;
 
 class AclManager {
     check() {
         return new Promise((resolve, reject) => {
-            if (_aclMap) {
+            if (this.permission) {
                 resolve();
             } else if (_pending) {
                 _pending.then(() => resolve())
@@ -18,19 +20,14 @@ class AclManager {
 
     restorePermission() {
         _pending = LoginApi.acl().then(res => {
-            if (res.list) {
-                _aclMap = new Map();
-                res.list.forEach(_ => {
-                    _aclMap.set(_.name, _);
-                })
-            }
-            console.log('权限初始化完成', _aclMap);
+            this.permission = new PermissionGroup(res.list);
+            console.log('权限初始化完成', this.permission);
         })
         return _pending;
     }
 
     destory() {
-        _aclMap = null;
+        this.permission = null;
     }
 }
 

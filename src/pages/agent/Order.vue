@@ -8,15 +8,6 @@
         :collection="collection"
       ></list-search>
     </div>
-    <div class="cus-table-header">
-      <div class="statistic">
-        <template v-if="statistic">
-          <span>当月业绩：{{ statistic.month_count }}</span>
-          <span>累计业绩：{{ statistic.count }}</span>
-        </template>
-      </div>
-      <a-button type="primary" @click="toEdit()">录入订单</a-button>
-    </div>
     <a-table
       :columns="columns"
       :data-source="collection.list"
@@ -38,22 +29,9 @@
         {{ orderStatusMap[data] }}
       </template>
       <template slot="operate" slot-scope="data">
-        <div class="cus-nowrap">
-          <a-icon type="edit" title="编辑" @click="toEdit(data.id)" />
-          <a-divider type="vertical"></a-divider>
-          <a-icon type="eye" title="详情" @click="toDetail(data.id)" />
-          <a-divider type="vertical"></a-divider>
-          <a-icon type="export" title="导出" @click="toExport(data)" />
-        </div>
-        <!-- <a-divider type="vertical"></a-divider>
-        <a-popconfirm title="确认删除？" @confirm="toDelete(data.id)">
-          <a-icon type="delete" title="删除" />
-        </a-popconfirm> -->
+        <a-icon type="eye" title="详情" @click="toDetail(data.id)" />
       </template>
     </a-table>
-
-    <!-- 编辑 -->
-    <cus-edit v-model="editVisible" :data="temp" @refresh="_getList"></cus-edit>
 
     <!-- 详情 -->
     <cus-detail
@@ -157,15 +135,12 @@ const columns = [
 ];
 
 import listMixin from "../../mixins/list";
-import CusEdit from "./EditModal";
-import CusDetail from "./Detail";
-import OrderApi from "../../api/order";
-import Utils from "../../libs/utils";
-import { orderStatusMap } from "./mapping";
+import CusDetail from "../order/Detail";
+import AgentApi from "../../api/agent";
+import { orderStatusMap } from "../order/mapping";
 
 export default {
   components: {
-    CusEdit,
     CusDetail,
   },
   mixins: [listMixin],
@@ -174,54 +149,21 @@ export default {
       orderStatusMap,
       condition,
       columns,
-      statistic: null,
-      editVisible: false,
       detailVisible: false,
     };
   },
-  created() {
-    this.getStatistic();
-  },
   methods: {
-    toExport(e) {
-      OrderApi.export(e.id).then((res) => {
-        Utils.export(res, `订单-${e.ordersn}`).then(() =>
-          this.$message.success("导出成功")
-        );
-      });
-    },
     toDetail(e) {
       this.temp = e;
       this.detailVisible = true;
     },
-    toEdit(e) {
-      if (e) {
-        OrderApi.detail(e).then((res) => {
-          this.temp = res;
-          this.editVisible = true;
-        });
-      } else {
-        this.temp = e;
-        this.editVisible = true;
-      }
-    },
-    // toDelete(e) {
-    //   OrderApi.remove(e).then(() => {
-    //     this.$message.success("操作成功");
-    //     this._getList();
-    //   });
-    // },
-    getStatistic() {
-      OrderApi.statistic().then((res) => {
-        this.statistic = res;
-      });
-    },
     _getList() {
       this.collection.loading = true;
-      OrderApi.list(
+      AgentApi.order(
         Object.assign(
           {},
           {
+            id: this.$route.params.id,
             page: this.collection.page,
             pageSize: this.collection.pageSize,
           },
@@ -236,14 +178,3 @@ export default {
   },
 };
 </script>
-
-<style lang="less" scoped>
-.statistic {
-  font-size: 20px;
-  color: red;
-
-  span:first-of-type {
-    margin-right: 50px;
-  }
-}
-</style>

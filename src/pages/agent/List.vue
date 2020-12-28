@@ -6,7 +6,7 @@
         :condition="condition"
         :collection="collection"
       ></list-search>
-      <a-button type="primary" @click="toEdit()">新增角色</a-button>
+      <a-button type="primary" @click="toEdit()">新增代理人</a-button>
     </div>
     <a-table
       :columns="columns"
@@ -27,7 +27,7 @@
         <a-divider type="vertical"></a-divider>
         <a-icon type="eye" title="详情" @click="toDetail(data)" />
         <a-divider type="vertical"></a-divider>
-        <a-icon type="api" title="关联权限" @click="toManager(data.id)" />
+        <a-icon type="book" title="查看订单" @click="toOrder(data)" />
         <a-divider type="vertical"></a-divider>
         <a-popconfirm title="确认删除？" @confirm="toDelete(data.id)">
           <a-icon type="delete" title="删除" />
@@ -44,9 +44,6 @@
       :data="temp"
       @refresh="_getList"
     ></cus-detail>
-
-    <!-- 权限 -->
-    <cus-permission v-model="aclVisible" :data="temp"></cus-permission>
   </div>
 </template>
 
@@ -54,14 +51,34 @@
 const condition = [
   {
     key: "name",
-    placeholder: "角色名",
+    placeholder: "代理人名称",
   },
 ];
 
 const columns = [
   {
-    title: "角色名",
+    title: "代理人名称",
     dataIndex: "name",
+  },
+  {
+    title: "电话号码",
+    dataIndex: "phone",
+  },
+  {
+    title: "地区",
+    dataIndex: "area",
+  },
+  {
+    title: "店铺名称",
+    dataIndex: "shop_name",
+  },
+  {
+    title: "店铺地址",
+    dataIndex: "address",
+  },
+  {
+    title: "招商员",
+    dataIndex: "merchants_name",
   },
   {
     title: "创建时间",
@@ -76,15 +93,12 @@ const columns = [
 import listMixin from "../../mixins/list";
 import CusEdit from "./Edit";
 import CusDetail from "./Detail";
-import CusPermission from "./Permission";
-import RoleApi from "../../api/role";
-import { PermissionGroup } from "../../model/Permission";
+import AgentApi from "../../api/agent";
 
 export default {
   components: {
     CusEdit,
     CusDetail,
-    CusPermission,
   },
   mixins: [listMixin],
   data() {
@@ -93,7 +107,6 @@ export default {
       columns,
       editVisible: false,
       detailVisible: false,
-      aclVisible: false,
     };
   },
   methods: {
@@ -106,20 +119,17 @@ export default {
       this.editVisible = true;
     },
     toDelete(e) {
-      RoleApi.remove(e).then(() => {
+      AgentApi.remove(e).then(() => {
         this.$message.success("操作成功");
         this._getList();
       });
     },
-    toManager(e) {
-      RoleApi.permissions(e).then((res) => {
-        this.temp = new PermissionGroup(res.list);
-        this.aclVisible = true;
-      });
+    toOrder(e) {
+      this.$router.push(`/agent/order/${e.id}`);
     },
     _getList() {
       this.collection.loading = true;
-      RoleApi.list(
+      AgentApi.list(
         Object.assign(
           {},
           {

@@ -6,7 +6,6 @@
         :condition="condition"
         :collection="collection"
       ></list-search>
-      <a-button type="primary" @click="toEdit()">新增角色</a-button>
     </div>
     <a-table
       :columns="columns"
@@ -22,31 +21,16 @@
       rowKey="id"
       @change="listChange"
     >
-      <template slot="operate" slot-scope="data">
+      <!-- <template slot="operate" slot-scope="data">
         <a-icon type="edit" title="编辑" @click="toEdit(data)" />
         <a-divider type="vertical"></a-divider>
         <a-icon type="eye" title="详情" @click="toDetail(data)" />
         <a-divider type="vertical"></a-divider>
-        <a-icon type="api" title="关联权限" @click="toManager(data.id)" />
-        <a-divider type="vertical"></a-divider>
         <a-popconfirm title="确认删除？" @confirm="toDelete(data.id)">
           <a-icon type="delete" title="删除" />
         </a-popconfirm>
-      </template>
+      </template> -->
     </a-table>
-
-    <!-- 编辑 -->
-    <cus-edit v-model="editVisible" :data="temp" @refresh="_getList"></cus-edit>
-
-    <!-- 详情 -->
-    <cus-detail
-      v-model="detailVisible"
-      :data="temp"
-      @refresh="_getList"
-    ></cus-detail>
-
-    <!-- 权限 -->
-    <cus-permission v-model="aclVisible" :data="temp"></cus-permission>
   </div>
 </template>
 
@@ -54,72 +38,64 @@
 const condition = [
   {
     key: "name",
-    placeholder: "角色名",
+    placeholder: "资源名",
+  },
+  {
+    key: "man_name",
+    placeholder: "业务员名称",
   },
 ];
 
 const columns = [
   {
-    title: "角色名",
+    title: "资源名",
     dataIndex: "name",
+  },
+  {
+    title: "电话号码",
+    dataIndex: "phone",
+  },
+  {
+    title: "收件地址",
+    dataIndex: "address",
+  },
+  {
+    title: "发货信息",
+    dataIndex: "send_info",
+  },
+  {
+    title: "业务员名称",
+    dataIndex: "man_name",
+  },
+  {
+    title: "买家昵称",
+    dataIndex: "nickname",
   },
   {
     title: "创建时间",
     dataIndex: "created_at",
   },
-  {
-    title: "操作",
-    scopedSlots: { customRender: "operate" },
-  },
+  // {
+  //   title: "操作",
+  //   scopedSlots: { customRender: "operate" },
+  // },
 ];
 
 import listMixin from "../../mixins/list";
-import CusEdit from "./Edit";
-import CusDetail from "./Detail";
-import CusPermission from "./Permission";
-import RoleApi from "../../api/role";
-import { PermissionGroup } from "../../model/Permission";
+import ResourceApi from "../../api/resource";
 
 export default {
-  components: {
-    CusEdit,
-    CusDetail,
-    CusPermission,
-  },
   mixins: [listMixin],
   data() {
     return {
       condition,
       columns,
-      editVisible: false,
-      detailVisible: false,
-      aclVisible: false,
     };
   },
   methods: {
-    toDetail(e) {
-      this.temp = e;
-      this.detailVisible = true;
-    },
-    toEdit(e) {
-      this.temp = e;
-      this.editVisible = true;
-    },
-    toDelete(e) {
-      RoleApi.remove(e).then(() => {
-        this.$message.success("操作成功");
-        this._getList();
-      });
-    },
-    toManager(e) {
-      RoleApi.permissions(e).then((res) => {
-        this.temp = new PermissionGroup(res.list);
-        this.aclVisible = true;
-      });
-    },
     _getList() {
       this.collection.loading = true;
-      RoleApi.list(
+      ResourceApi.history(
         Object.assign(
           {},
           {

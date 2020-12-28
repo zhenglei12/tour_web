@@ -6,19 +6,31 @@
       </tr>
       <tr>
         <th class="required">录单日期</th>
-        <td colspan="3">
+        <td colspan="2">
           <a-date-picker v-model="form.enter_date" valueFormat="YYYY-MM-DD" />
         </td>
         <th class="required">录单人</th>
-        <td colspan="3">
+        <td colspan="2">
           <a-input v-model="form.name" />
+        </td>
+        <th class="required">代理人</th>
+        <td>
+          <a-select
+            v-model="form.a_id"
+            allowClear
+            :dropdownMatchSelectWidth="false"
+          >
+            <a-select-option
+              v-for="(option, index) in agentList"
+              :key="index"
+              :value="option.id | string"
+            >
+              {{ option.name }}
+            </a-select-option>
+          </a-select>
         </td>
       </tr>
       <tr>
-        <th class="required">游玩地区</th>
-        <td colspan="2">
-          <a-input v-model="form.area" />
-        </td>
         <th class="required">路线名称</th>
         <td colspan="2">
           <a-select
@@ -30,11 +42,15 @@
             <a-select-option
               v-for="(option, index) in tripList"
               :key="index"
-              :value="option.id"
+              :value="option.id | string"
             >
               {{ option.name }}
             </a-select-option>
           </a-select>
+        </td>
+        <th class="required">游玩地区</th>
+        <td colspan="2">
+          <a-input v-model="form.area" />
         </td>
         <th class="required">vip卡号</th>
         <td>
@@ -104,24 +120,24 @@
             :key="'trip-' + index"
             class="cus-draggable"
           >
-            <td v-if="item.t_id">{{ item.date }}</td>
-            <td v-else>
+            <!-- <td v-if="item.t_id">{{ item.date }}</td> -->
+            <td>
               <a-date-picker
                 v-model="item.date"
                 placeholder="日期"
                 valueFormat="YYYY-MM-DD"
               />
             </td>
-            <td v-if="item.t_id" colspan="5">{{ item.content }}</td>
-            <td v-else colspan="5">
+            <!-- <td v-if="item.t_id" colspan="5">{{ item.content }}</td> -->
+            <td colspan="5">
               <a-textarea
                 v-model="item.content"
                 placeholder="具体行程"
                 rows="3"
               ></a-textarea>
             </td>
-            <td v-if="item.t_id">{{ tripMealMap[item.meal] }}</td>
-            <td v-else>
+            <!-- <td v-if="item.t_id">{{ tripMealMap[item.meal] }}</td> -->
+            <td>
               <a-select v-model="item.meal" placeholder="用餐安排" allowClear>
                 <a-select-option
                   v-for="(meal, i) in meals"
@@ -131,8 +147,8 @@
                 >
               </a-select>
             </td>
-            <td v-if="item.t_id">{{ tripStayMap[item.stay] }}</td>
-            <td v-else>
+            <!-- <td v-if="item.t_id">{{ tripStayMap[item.stay] }}</td> -->
+            <td>
               <a-select v-model="item.stay" placeholder="住宿安排" allowClear>
                 <a-select-option
                   v-for="(option, i) in stays"
@@ -266,6 +282,7 @@
 
 <script>
 import TripApi from "../../api/trip";
+import AgentApi from "../../api/agent";
 import OrderApi from "../../api/order";
 import draggable from "vuedraggable";
 import Utils from "../../libs/utils";
@@ -299,11 +316,13 @@ export default {
         this.data
       ),
       tripList: [],
+      agentList: [],
     };
   },
   created() {
     console.log(this.form);
     this.getTripList();
+    this.getAgentList();
   },
   methods: {
     numberChange() {
@@ -312,18 +331,29 @@ export default {
         .map((_, i) => Object.assign({}, _, this.form.order_staff[i]));
     },
     getTripList() {
-      TripApi.list({
+      return TripApi.select({
         page: 1,
-        pageSize: 100,
+        pageSize: 10000,
       }).then((res) => {
         console.log("行程列表", res.list);
         this.tripList = res.list;
       });
     },
+    getAgentList() {
+      return AgentApi.select({
+        page: 1,
+        pageSize: 10000,
+      }).then((res) => {
+        console.log("代理人列表", res.list);
+        this.agentList = res.list;
+      });
+    },
     tripChange() {
       let trip = this.tripList.find((_) => _.id == this.form.t_id);
-      this.form.trip_info = trip.trip_info;
-      console.log(trip, this.form.trip_info);
+      if (trip) {
+        this.form.area = trip.area;
+        this.form.trip_info = trip.trip_info;
+      }
     },
     submit(edit = false) {
       this.loading = true;

@@ -24,18 +24,18 @@ export default {
   data() {
     return {
       loading: false,
-      form: {},
+      form: null,
     };
   },
   watch: {
     visible(e) {
-      if (e) {
-        console.log(this.R);
+      if (e && this.isEdit) {
         this.form = {
           id: this.R.id,
           enter_date: this.R.enter_date,
           name: this.R.name,
-          area: this.R.area,
+          a_id: this.R.a_id,
+          area: this.R.order_trip.area,
           up_group_date: this.R.up_group_date,
           off_group_date: this.R.off_group_date,
           vip_card: this.R.vip_card,
@@ -62,6 +62,9 @@ export default {
     },
   },
   methods: {
+    beforeClose() {
+      this.form = null;
+    },
     submit() {
       this.$refs.edit.submit(true).then(() => {
         this.$emit("refresh");

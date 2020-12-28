@@ -55,6 +55,26 @@ const routes = [{
             component: () => import('./pages/order/Edit'),
         },
         {
+            path: 'agent',
+            name: 'agent',
+            component: () => import('./pages/agent/List'),
+        },
+        {
+            path: 'agent/order/:id',
+            name: 'agent/order',
+            component: () => import('./pages/agent/Order'),
+        },
+        {
+            path: 'resource',
+            name: 'resource',
+            component: () => import('./pages/resource/List'),
+        },
+        {
+            path: 'resource/history',
+            name: 'resource/history',
+            component: () => import('./pages/resource/History'),
+        },
+        {
             name: '404',
             path: '/404',
             component: () => import('./pages/exception/404'),

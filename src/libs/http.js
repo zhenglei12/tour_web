@@ -60,6 +60,7 @@ _axios.interceptors.response.use(
         console.log(response);
         if (response.status === 401) {
             console.log('去登录');
+            new Vue().$router.push('/login');
         } else if (response.status === 403) {
             console.log('暂无权限');
         } else if (response.status === 404) {

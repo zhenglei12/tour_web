@@ -10,12 +10,19 @@ Vue.prototype.$api = http;
 // 认证
 import auth from './libs/auth';
 Vue.prototype.$auth = auth;
+// 权限
+import acl from './libs/acl';
+Vue.prototype.$acl = acl;
 // 全局组件
 import component from './components';
 Vue.use(component);
 // // 全局混入
 // import mixin from './mixins';
 // Vue.use(mixin);
+
+Vue.filter('string', function (value) {
+  return value.toString();
+})
 
 Vue.config.productionTip = false;
 Vue.config.errorHandler = (err) => {

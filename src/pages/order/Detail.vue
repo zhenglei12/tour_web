@@ -13,17 +13,29 @@
       </tr>
       <tr>
         <th>录单日期</th>
-        <td colspan="3">{{ R.enter_date }}</td>
+        <td colspan="2">{{ R.enter_date }}</td>
         <th>录单人</th>
-        <td colspan="3">{{ R.name }}</td>
+        <td colspan="2">{{ R.name }}</td>
+        <th>代理人</th>
+        <td>{{ R.order_agent && R.order_agent.name }}</td>
       </tr>
       <tr>
         <th>游玩地区</th>
-        <td colspan="2">{{ R.area }}</td>
+        <td colspan="2">{{ R.order_trip && R.order_trip.area }}</td>
         <th>路线名称</th>
-        <td colspan="2">选择值</td>
+        <td colspan="2">{{ R.order_trip && R.order_trip.name }}</td>
         <th>vip卡号</th>
         <td>{{ R.vip_card }}</td>
+      </tr>
+      <tr>
+        <th>跟团日期</th>
+        <td colspan="2">{{ R.up_group_date }}</td>
+        <th>离团日期</th>
+        <td colspan="2">{{ R.off_group_date }}</td>
+        <th>人数</th>
+        <td>
+          {{ R.numbers }}
+        </td>
       </tr>
       <tr>
         <th>总团费</th>
@@ -34,16 +46,6 @@
         <td>{{ R.balance_amount }}</td>
         <th>代收款</th>
         <td>{{ R.collection_amount }}</td>
-      </tr>
-      <tr>
-        <th>跟团日期</th>
-        <td>{{ R.up_group_date }}</td>
-        <th>离团日期</th>
-        <td>{{ R.off_group_date }}</td>
-        <th>人数</th>
-        <td colspan="3">
-          {{ R.numbers }}
-        </td>
       </tr>
       <tr>
         <th>时间</th>

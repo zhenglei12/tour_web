@@ -1,5 +1,5 @@
 <template>
-  <a-drawer :visible="visible" title="行程详情" width="500" @close="close">
+  <a-drawer :visible="visible" title="行程详情" @close="close">
     <a-descriptions :column="1">
       <a-descriptions-item label="行程名称">{{ R.name }}</a-descriptions-item>
       <a-descriptions-item label="行程地区">{{ R.area }}</a-descriptions-item>

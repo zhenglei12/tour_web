@@ -29,6 +29,19 @@
             >订单录入</a-menu-item
           >
         </a-sub-menu>
+        <a-menu-item key="agent" @click="goto('/agent')">
+          <a-icon type="user" />
+          <span>代理人管理</span>
+        </a-menu-item>
+        <a-sub-menu key="resource">
+          <span slot="title"><a-icon type="user" /><span>资源管理</span></span>
+          <a-menu-item key="resource" @click="goto('/resource')"
+            >资源分配</a-menu-item
+          >
+          <a-menu-item key="resource/history" @click="goto('/resource/history')"
+            >历史分配</a-menu-item
+          >
+        </a-sub-menu>
       </a-menu>
     </a-layout-sider>
     <a-layout>
@@ -103,7 +116,7 @@ export default {
     background: #fff;
     padding: 0;
     box-shadow: 0 0 10px 0px #cccccc;
-    z-index: 1;
+    z-index: 9;
     display: flex;
     justify-content: space-between;
     align-items: center;
