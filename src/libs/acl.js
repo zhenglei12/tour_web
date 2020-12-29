@@ -1,7 +1,7 @@
-import LoginApi from '../api/login';
+import LoginApi from '../apis/login';
 import {
     PermissionGroup
-} from '../model/Permission';
+} from '../models/Permission';
 
 var _pending;
 
@@ -24,6 +24,16 @@ class AclManager {
             console.log('权限初始化完成', this.permission);
         })
         return _pending;
+    }
+
+    verify(acl, scope) {
+        let res = false;
+        if (typeof acl === 'string') {
+            res = this.permission.has(acl);
+        } else {
+            res = scope === 'one' ? !!acl.find(_ => this.permission.has(_)) : !acl.find(_ => this.permission.has(_));
+        }
+        return res;
     }
 
     destory() {

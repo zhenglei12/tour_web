@@ -15,7 +15,9 @@
           <span>累计业绩：{{ statistic.count }}</span>
         </template>
       </div>
-      <a-button type="primary" @click="toEdit()">录入订单</a-button>
+      <a-button v-acl="'order-add'" type="primary" @click="toEdit()"
+        >录入订单</a-button
+      >
     </div>
     <a-table
       :columns="columns"
@@ -39,11 +41,17 @@
       </template>
       <template slot="operate" slot-scope="data">
         <div class="cus-nowrap">
-          <a-icon type="edit" title="编辑" @click="toEdit(data.id)" />
-          <a-divider type="vertical"></a-divider>
-          <a-icon type="eye" title="详情" @click="toDetail(data.id)" />
-          <a-divider type="vertical"></a-divider>
-          <a-icon type="export" title="导出" @click="toExport(data)" />
+          <template v-acl="'order-update'">
+            <a-icon type="edit" title="编辑" @click="toEdit(data.id)" />
+            <a-divider type="vertical"></a-divider>
+          </template>
+          <template v-acl="'order-detail'">
+            <a-icon type="eye" title="详情" @click="toDetail(data.id)" />
+            <a-divider type="vertical"></a-divider>
+          </template>
+          <template v-acl="'order-exports'">
+            <a-icon type="export" title="导出" @click="toExport(data)" />
+          </template>
         </div>
         <!-- <a-divider type="vertical"></a-divider>
         <a-popconfirm title="确认删除？" @confirm="toDelete(data.id)">

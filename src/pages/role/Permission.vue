@@ -34,6 +34,15 @@
         </a-checkbox>
       </div>
     </div>
+    <template slot="footer">
+      <span style="margin-right: 16px"
+        >已选 {{ allPermission.checkedCount }} 项</span
+      >
+      <a-button key="back" @click="close">取消</a-button>
+      <a-button key="submit" type="primary" :loading="loading" @click="submit"
+        >确定</a-button
+      >
+    </template>
   </a-modal>
 </template>
 
@@ -41,7 +50,7 @@
 import editMixin from "../../mixins/edit";
 import RoleApi from "../../api/role";
 import PermissionApi from "../../api/permission";
-import { PermissionGroup } from "../../model/Permission";
+import { PermissionGroup } from "../../models/Permission";
 
 export default {
   mixins: [editMixin],
@@ -54,7 +63,6 @@ export default {
   watch: {
     visible(e) {
       if (e) {
-        console.log(this.R);
         this.R.permissions.forEach((_) => {
           this.allPermission.changeState(_.name, true);
         });
@@ -77,7 +85,10 @@ export default {
       this.loading = true;
       RoleApi.allot({
         id: this.R.id,
-        permissions: this.allPermission.getChecked(null, (item) => item.name),
+        permissions: this.allPermission.getChecked(
+          null,
+          (item) => item.data && item.data.name
+        ),
       })
         .then((res) => {
           this.$message.success("保存成功");
@@ -103,6 +114,7 @@ export default {
 
   .group-items {
     display: flex;
+    flex-wrap: wrap;
     margin: 8px;
 
     .item {

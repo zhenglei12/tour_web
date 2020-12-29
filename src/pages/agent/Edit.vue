@@ -14,7 +14,7 @@
       :label-col="{ span: 4 }"
       :wrapper-col="{ span: 19 }"
     >
-      <a-form-model-item label="代理人名称" required prop="name">
+      <a-form-model-item label="代理名称" required prop="name">
         <a-input v-model="form.name" allow-clear />
       </a-form-model-item>
       <a-form-model-item label="电话号码" required prop="phone">
@@ -65,7 +65,7 @@ export default {
   },
   computed: {
     title() {
-      return this.isEdit ? "编辑代理人" : "新增代理人";
+      return this.isEdit ? "编辑代理" : "新增代理";
     },
   },
   methods: {

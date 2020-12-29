@@ -6,7 +6,9 @@
         :condition="condition"
         :collection="collection"
       ></list-search>
-      <a-button type="primary" @click="toEdit()">新增权限</a-button>
+      <a-button v-acl="'permission-add'" type="primary" @click="toEdit()"
+        >新增权限</a-button
+      >
     </div>
     <a-table
       :columns="columns"
@@ -23,13 +25,17 @@
       @change="listChange"
     >
       <template slot="operate" slot-scope="data">
-        <a-icon type="edit" title="编辑" @click="toEdit(data)" />
+        <template v-acl="'permission-update'">
+          <a-icon type="edit" title="编辑" @click="toEdit(data)" />
+          <a-divider type="vertical"></a-divider>
+        </template>
         <!-- <a-divider type="vertical"></a-divider>
         <a-icon type="eye" title="详情" @click="toDetail(data)" /> -->
-        <a-divider type="vertical"></a-divider>
-        <a-popconfirm title="确认删除？" @confirm="toDelete(data.id)">
-          <a-icon type="delete" title="删除" />
-        </a-popconfirm>
+        <template v-acl="'permission-delete'">
+          <a-popconfirm title="确认删除？" @confirm="toDelete(data.id)">
+            <a-icon type="delete" title="删除" />
+          </a-popconfirm>
+        </template>
       </template>
     </a-table>
 

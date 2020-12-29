@@ -6,7 +6,9 @@
         :condition="condition"
         :collection="collection"
       ></list-search>
-      <a-button type="primary" @click="toEdit()">新增角色</a-button>
+      <a-button v-acl="'role-add'" type="primary" @click="toEdit()"
+        >新增角色</a-button
+      >
     </div>
     <a-table
       :columns="columns"
@@ -23,15 +25,23 @@
       @change="listChange"
     >
       <template slot="operate" slot-scope="data">
-        <a-icon type="edit" title="编辑" @click="toEdit(data)" />
-        <a-divider type="vertical"></a-divider>
-        <a-icon type="eye" title="详情" @click="toDetail(data)" />
-        <a-divider type="vertical"></a-divider>
-        <a-icon type="api" title="关联权限" @click="toManager(data.id)" />
-        <a-divider type="vertical"></a-divider>
-        <a-popconfirm title="确认删除？" @confirm="toDelete(data.id)">
-          <a-icon type="delete" title="删除" />
-        </a-popconfirm>
+        <template v-acl="'role-update'">
+          <a-icon type="edit" title="编辑" @click="toEdit(data)" />
+          <a-divider type="vertical"></a-divider>
+        </template>
+        <!-- <template v-acl="'role-detail'">
+          <a-icon type="eye" title="详情" @click="toDetail(data)" />
+          <a-divider type="vertical"></a-divider>
+        </template> -->
+        <template v-acl="'role-add.permission'">
+          <a-icon type="api" title="关联权限" @click="toManager(data.id)" />
+          <a-divider type="vertical"></a-divider>
+        </template>
+        <template v-acl="'role-delete'">
+          <a-popconfirm title="确认删除？" @confirm="toDelete(data.id)">
+            <a-icon type="delete" title="删除" />
+          </a-popconfirm>
+        </template>
       </template>
     </a-table>
 
@@ -39,11 +49,11 @@
     <cus-edit v-model="editVisible" :data="temp" @refresh="_getList"></cus-edit>
 
     <!-- 详情 -->
-    <cus-detail
+    <!-- <cus-detail
       v-model="detailVisible"
       :data="temp"
       @refresh="_getList"
-    ></cus-detail>
+    ></cus-detail> -->
 
     <!-- 权限 -->
     <cus-permission v-model="aclVisible" :data="temp"></cus-permission>
@@ -75,14 +85,14 @@ const columns = [
 
 import listMixin from "../../mixins/list";
 import CusEdit from "./Edit";
-import CusDetail from "./Detail";
+// import CusDetail from "./Detail";
 import CusPermission from "./Permission";
 import RoleApi from "../../api/role";
 
 export default {
   components: {
     CusEdit,
-    CusDetail,
+    // CusDetail,
     CusPermission,
   },
   mixins: [listMixin],
@@ -91,15 +101,15 @@ export default {
       condition,
       columns,
       editVisible: false,
-      detailVisible: false,
+      // detailVisible: false,
       aclVisible: false,
     };
   },
   methods: {
-    toDetail(e) {
-      this.temp = e;
-      this.detailVisible = true;
-    },
+    // toDetail(e) {
+    //   this.temp = e;
+    //   this.detailVisible = true;
+    // },
     toEdit(e) {
       this.temp = e;
       this.editVisible = true;

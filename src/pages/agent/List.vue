@@ -6,7 +6,9 @@
         :condition="condition"
         :collection="collection"
       ></list-search>
-      <a-button type="primary" @click="toEdit()">新增代理人</a-button>
+      <a-button v-acl="'agent-add'" type="primary" @click="toEdit()"
+        >新增代理</a-button
+      >
     </div>
     <a-table
       :columns="columns"
@@ -23,15 +25,23 @@
       @change="listChange"
     >
       <template slot="operate" slot-scope="data">
-        <a-icon type="edit" title="编辑" @click="toEdit(data)" />
-        <a-divider type="vertical"></a-divider>
-        <a-icon type="eye" title="详情" @click="toDetail(data)" />
-        <a-divider type="vertical"></a-divider>
-        <a-icon type="book" title="查看订单" @click="toOrder(data)" />
-        <a-divider type="vertical"></a-divider>
-        <a-popconfirm title="确认删除？" @confirm="toDelete(data.id)">
-          <a-icon type="delete" title="删除" />
-        </a-popconfirm>
+        <template v-acl="'agent-update'">
+          <a-icon type="edit" title="编辑" @click="toEdit(data)" />
+          <a-divider type="vertical"></a-divider>
+        </template>
+        <template v-acl="'agent-detail'">
+          <a-icon type="eye" title="详情" @click="toDetail(data)" />
+          <a-divider type="vertical"></a-divider>
+        </template>
+        <template v-acl="'agent-order.list'">
+          <a-icon type="book" title="查看订单" @click="toOrder(data)" />
+          <a-divider type="vertical"></a-divider>
+        </template>
+        <template v-acl="'agent-delete'">
+          <a-popconfirm title="确认删除？" @confirm="toDelete(data.id)">
+            <a-icon type="delete" title="删除" />
+          </a-popconfirm>
+        </template>
       </template>
     </a-table>
 
@@ -51,13 +61,13 @@
 const condition = [
   {
     key: "name",
-    placeholder: "代理人名称",
+    placeholder: "代理名称",
   },
 ];
 
 const columns = [
   {
-    title: "代理人名称",
+    title: "代理名称",
     dataIndex: "name",
   },
   {

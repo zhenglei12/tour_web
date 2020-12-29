@@ -65,6 +65,9 @@ class Permission {
 export class PermissionGroup extends Permission {
     _type = "group";
 
+    checkedCount = 0;
+    disabledCount = 0;
+
     permissions = new Map();
 
     items = [];
@@ -103,6 +106,10 @@ export class PermissionGroup extends Permission {
             }
         }
         return this;
+    }
+
+    has(key) {
+        return this.permissions.has(key);
     }
 
     changeState(key, checked = null, disabled = null) {

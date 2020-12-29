@@ -16,13 +16,13 @@ Vue.prototype.$acl = acl;
 // 全局组件
 import component from './components';
 Vue.use(component);
-// // 全局混入
 // import mixin from './mixins';
 // Vue.use(mixin);
+import filter from './filters';
+Vue.use(filter);
+import directive from './directives';
+Vue.use(directive);
 
-Vue.filter('string', function (value) {
-  return value.toString();
-})
 
 Vue.config.productionTip = false;
 Vue.config.errorHandler = (err) => {

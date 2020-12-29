@@ -1,7 +1,7 @@
 <template>
-  <a-drawer :visible="visible" title="代理人详情" @close="close">
+  <a-drawer :visible="visible" title="代理详情" @close="close">
     <a-descriptions :column="1">
-      <a-descriptions-item label="代理人名称">{{ R.name }}</a-descriptions-item>
+      <a-descriptions-item label="代理名称">{{ R.name }}</a-descriptions-item>
       <a-descriptions-item label="电话号码">{{ R.phone }}</a-descriptions-item>
       <a-descriptions-item label="地区">{{ R.area }}</a-descriptions-item>
       <a-descriptions-item label="店铺名称">

@@ -10,4 +10,8 @@ export default {
         id
     }),
     list: (data) => http.post('api/user/list', data),
+    roles: (id) => http.post('api/user/role/list', {
+        id
+    }),
+    allot: (data) => http.post('api/user/add/role', data),
 }

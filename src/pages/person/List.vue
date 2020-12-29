@@ -6,7 +6,9 @@
         :condition="condition"
         :collection="collection"
       ></list-search>
-      <a-button type="primary" @click="toEdit()">新增用户</a-button>
+      <a-button v-acl="'user-add'" type="primary" @click="toEdit()"
+        >新增用户</a-button
+      >
     </div>
     <a-table
       :columns="columns"
@@ -23,25 +25,38 @@
       @change="listChange"
     >
       <template slot="operate" slot-scope="data">
-        <a-icon type="edit" title="编辑" @click="toEdit(data)" />
-        <a-divider type="vertical"></a-divider>
-        <a-icon type="eye" title="详情" @click="toDetail(data)" />
-        <a-divider type="vertical"></a-divider>
-        <a-popconfirm title="确认删除？" @confirm="toDelete(data.id)">
-          <a-icon type="delete" title="删除" />
-        </a-popconfirm>
+        <template v-acl="'user-update'">
+          <a-icon type="edit" title="编辑" @click="toEdit(data)" />
+          <a-divider type="vertical"></a-divider>
+        </template>
+        <!-- <template v-acl="'user-detail'">
+          <a-icon type="eye" title="详情" @click="toDetail(data)" />
+          <a-divider type="vertical"></a-divider>
+        </template> -->
+        <template v-acl="'user-add.role'">
+          <a-icon type="api" title="分配角色" @click="toManager(data.id)" />
+          <a-divider type="vertical"></a-divider>
+        </template>
+        <template v-acl="'user-delete'">
+          <a-popconfirm title="确认删除？" @confirm="toDelete(data.id)">
+            <a-icon type="delete" title="删除" />
+          </a-popconfirm>
+        </template>
       </template>
     </a-table>
 
     <!-- 编辑 -->
     <cus-edit v-model="editVisible" :data="temp" @refresh="_getList"></cus-edit>
 
+    <!-- 分配角色 -->
+    <cus-role v-model="roleVisible" :data="temp" @refresh="_getList"></cus-role>
+
     <!-- 详情 -->
-    <cus-detail
+    <!-- <cus-detail
       v-model="detailVisible"
       :data="temp"
       @refresh="_getList"
-    ></cus-detail>
+    ></cus-detail> -->
   </div>
 </template>
 
@@ -74,13 +89,15 @@ const columns = [
 
 import listMixin from "../../mixins/list";
 import CusEdit from "./Edit";
-import CusDetail from "./Detail";
+// import CusDetail from "./Detail";
+import CusRole from "./Role";
 import UserApi from "../../api/user";
 
 export default {
   components: {
     CusEdit,
-    CusDetail,
+    // CusDetail,
+    CusRole,
   },
   mixins: [listMixin],
   data() {
@@ -88,14 +105,15 @@ export default {
       condition,
       columns,
       editVisible: false,
-      detailVisible: false,
+      // detailVisible: false,
+      roleVisible: false,
     };
   },
   methods: {
-    toDetail(e) {
-      this.temp = e;
-      this.detailVisible = true;
-    },
+    // toDetail(e) {
+    //   this.temp = e;
+    //   this.detailVisible = true;
+    // },
     toEdit(e) {
       this.temp = e;
       this.editVisible = true;
@@ -104,6 +122,15 @@ export default {
       UserApi.remove(e).then(() => {
         this.$message.success("操作成功");
         this._getList();
+      });
+    },
+    toManager(e) {
+      UserApi.roles(e).then((res) => {
+        this.temp = {
+          id: e,
+          roles: res.list.map((_) => _.name),
+        };
+        this.roleVisible = true;
       });
     },
     _getList() {

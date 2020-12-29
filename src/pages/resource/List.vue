@@ -7,13 +7,21 @@
         :collection="collection"
       ></list-search>
       <div class="btns">
-        <a-button type="primary" @click="allotVisible = true"
+        <a-button
+          v-acl="'resources-distribute'"
+          type="primary"
+          @click="allotVisible = true"
           >批量分配</a-button
         >
-        <a-button type="primary" @click="importVisible = true"
+        <a-button
+          v-acl="'resources-import'"
+          type="primary"
+          @click="importVisible = true"
           >导入资源</a-button
         >
-        <a-button type="primary" @click="toEdit()">新增资源</a-button>
+        <a-button v-acl="'resources-add'" type="primary" @click="toEdit()"
+          >新增资源</a-button
+        >
       </div>
     </div>
     <a-table
@@ -32,13 +40,17 @@
       @change="listChange"
     >
       <template slot="operate" slot-scope="data">
-        <a-icon type="edit" title="编辑" @click="toEdit(data)" />
+        <template v-acl="'resources-update'">
+          <a-icon type="edit" title="编辑" @click="toEdit(data)" />
+          <a-divider type="vertical"></a-divider>
+        </template>
         <!-- <a-divider type="vertical"></a-divider>
         <a-icon type="eye" title="详情" @click="toDetail(data)" /> -->
-        <a-divider type="vertical"></a-divider>
-        <a-popconfirm title="确认删除？" @confirm="toDelete(data.id)">
-          <a-icon type="delete" title="删除" />
-        </a-popconfirm>
+        <template v-acl="'resources-delete'">
+          <a-popconfirm title="确认删除？" @confirm="toDelete(data.id)">
+            <a-icon type="delete" title="删除" />
+          </a-popconfirm>
+        </template>
       </template>
     </a-table>
 

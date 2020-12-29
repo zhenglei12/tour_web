@@ -1,3 +1,3 @@
 <template>
-  <div>Home</div>
+  <div v-acl="'asl'" class="a">Home</div>
 </template>

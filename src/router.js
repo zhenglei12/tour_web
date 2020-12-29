@@ -28,61 +28,99 @@ const routes = [{
             path: 'person',
             name: 'person',
             component: () => import('./pages/person/List'),
+            meta: {
+                group: 'user',
+                acl: 'user-list',
+            },
         },
         {
             path: 'permission',
             name: 'permission',
             component: () => import('./pages/permission/List'),
+            meta: {
+                group: 'user',
+                acl: 'permission-list',
+            },
         },
         {
             path: 'role',
             name: 'role',
             component: () => import('./pages/role/List'),
+            meta: {
+                group: 'user',
+                acl: 'role-list',
+            },
         },
         {
             path: 'trip',
             name: 'trip',
             component: () => import('./pages/trip/List'),
+            meta: {
+                acl: 'trip-list',
+            },
         },
         {
             path: 'order',
             name: 'order',
             component: () => import('./pages/order/List'),
+            meta: {
+                acl: 'order-list',
+            },
         },
         {
             path: 'order/edit',
             name: 'order/edit',
             component: () => import('./pages/order/Edit'),
+            meta: {
+                acl: 'order-add',
+            },
         },
         {
             path: 'agent',
             name: 'agent',
             component: () => import('./pages/agent/List'),
+            meta: {
+                acl: 'agent-list',
+            },
         },
         {
             path: 'agent/order/:id',
             name: 'agent/order',
             component: () => import('./pages/agent/Order'),
+            meta: {
+                acl: 'agent-order.list',
+            },
         },
         {
             path: 'resource',
             name: 'resource',
             component: () => import('./pages/resource/List'),
+            meta: {
+                acl: 'resources-list',
+            },
         },
         {
             path: 'resource/history',
             name: 'resource/history',
             component: () => import('./pages/resource/History'),
+            meta: {
+                acl: 'resources-distribute.list',
+            },
         },
         {
-            name: '404',
+            path: '/403',
+            name: '403',
+            component: () => import('./pages/exception/403'),
+        },
+        {
             path: '/404',
+            name: '404',
             component: () => import('./pages/exception/404'),
         },
-        // {
-        //     path: '*',
-        //     redirect: '/404'
-        // },
+        {
+            path: '*',
+            redirect: '/404'
+        },
     ]
 }, {
     path: '/login',
@@ -114,15 +152,22 @@ router.beforeEach((to, _from, next) => {
             Auth.check(),
             Acl.check(),
         ]).then(() => {
-            next()
+            console.log(to);
+            if (to.meta && to.meta.acl && !Acl.verify(to.meta.acl)) {
+                next({
+                    name: '403'
+                });
+            } else {
+                next();
+            }
         }).catch(() => {
             next({
                 name: 'login'
-            })
+            });
         })
     } else {
-        next()
+        next();
     }
 })
 
-export default router
+export default router;

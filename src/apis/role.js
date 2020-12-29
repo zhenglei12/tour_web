@@ -1,6 +1,7 @@
 import http from "../libs/http";
 
 export default {
+    all: () => http.post('api/role/all'),
     list: (data) => http.post('api/role/list', data),
     create: (data) => http.post('api/role/add', data),
     update: (data) => http.post('api/role/update', data),
