@@ -34,7 +34,7 @@
 
 <script>
 import editMixin from "../../mixins/edit";
-import UserApi from "../../api/user";
+import UserApi from "../../apis/user";
 
 export default {
   mixins: [editMixin],

@@ -83,7 +83,7 @@ const columns = [
 ];
 
 import listMixin from "../../mixins/list";
-import ResourceApi from "../../api/resource";
+import ResourceApi from "../../apis/resource";
 
 export default {
   mixins: [listMixin],

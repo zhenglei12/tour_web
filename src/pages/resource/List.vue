@@ -120,7 +120,7 @@ import CusEdit from "./Edit";
 // import CusDetail from "./Detail";
 import CusImport from "./Import";
 import CusAllot from "./Allot";
-import ResourceApi from "../../api/resource";
+import ResourceApi from "../../apis/resource";
 
 export default {
   components: {

@@ -25,7 +25,7 @@
 
 <script>
 import editMixin from "../../mixins/edit";
-import PermissionApi from "../../api/permission";
+import PermissionApi from "../../apis/permission";
 
 export default {
   mixins: [editMixin],

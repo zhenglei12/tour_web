@@ -88,7 +88,7 @@
 import draggable from "vuedraggable";
 import editMixin from "../../mixins/edit";
 import Utils from "../../libs/utils";
-import TripApi from "../../api/trip";
+import TripApi from "../../apis/trip";
 import { tripMealMap, tripStayMap } from "./mapping";
 
 export default {

@@ -283,9 +283,9 @@
 </template>
 
 <script>
-import TripApi from "../../api/trip";
-import AgentApi from "../../api/agent";
-import OrderApi from "../../api/order";
+import TripApi from "../../apis/trip";
+import AgentApi from "../../apis/agent";
+import OrderApi from "../../apis/order";
 import draggable from "vuedraggable";
 import Utils from "../../libs/utils";
 import { tripMealMap, tripStayMap } from "../trip/mapping";

@@ -85,7 +85,7 @@ const columns = [
 import listMixin from "../../mixins/list";
 import CusEdit from "./Edit";
 // import CusDetail from "./Detail";
-import PermissionApi from "../../api/permission";
+import PermissionApi from "../../apis/permission";
 
 export default {
   components: {

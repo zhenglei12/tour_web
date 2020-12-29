@@ -91,7 +91,7 @@ import listMixin from "../../mixins/list";
 import CusEdit from "./Edit";
 // import CusDetail from "./Detail";
 import CusRole from "./Role";
-import UserApi from "../../api/user";
+import UserApi from "../../apis/user";
 
 export default {
   components: {

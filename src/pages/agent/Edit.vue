@@ -38,7 +38,7 @@
 
 <script>
 import editMixin from "../../mixins/edit";
-import AgentApi from "../../api/agent";
+import AgentApi from "../../apis/agent";
 
 export default {
   mixins: [editMixin],

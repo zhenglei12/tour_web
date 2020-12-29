@@ -1,4 +1,4 @@
-import LoginApi from '../api/login';
+import LoginApi from '../apis/login';
 import AuthHandler from './auth.handler';
 import Acl from './acl';
 import router from '../router';

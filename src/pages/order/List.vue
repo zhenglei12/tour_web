@@ -167,7 +167,7 @@ const columns = [
 import listMixin from "../../mixins/list";
 import CusEdit from "./EditModal";
 import CusDetail from "./Detail";
-import OrderApi from "../../api/order";
+import OrderApi from "../../apis/order";
 import Utils from "../../libs/utils";
 import { orderStatusMap } from "./mapping";
 

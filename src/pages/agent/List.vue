@@ -103,7 +103,7 @@ const columns = [
 import listMixin from "../../mixins/list";
 import CusEdit from "./Edit";
 import CusDetail from "./Detail";
-import AgentApi from "../../api/agent";
+import AgentApi from "../../apis/agent";
 
 export default {
   components: {

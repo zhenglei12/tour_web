@@ -117,7 +117,7 @@
 <script>
 import detailMinxin from "../../mixins/detail";
 import { tripMealMap, tripStayMap } from "../trip/mapping";
-import OrderApi from "../../api/order";
+import OrderApi from "../../apis/order";
 import utils from "../../libs/utils";
 
 export default {

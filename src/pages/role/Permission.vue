@@ -48,8 +48,8 @@
 
 <script>
 import editMixin from "../../mixins/edit";
-import RoleApi from "../../api/role";
-import PermissionApi from "../../api/permission";
+import RoleApi from "../../apis/role";
+import PermissionApi from "../../apis/permission";
 import { PermissionGroup } from "../../models/Permission";
 
 export default {

@@ -136,7 +136,7 @@ const columns = [
 
 import listMixin from "../../mixins/list";
 import CusDetail from "../order/Detail";
-import AgentApi from "../../api/agent";
+import AgentApi from "../../apis/agent";
 import { orderStatusMap } from "../order/mapping";
 
 export default {

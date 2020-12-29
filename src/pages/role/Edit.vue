@@ -22,7 +22,7 @@
 
 <script>
 import editMixin from "../../mixins/edit";
-import RoleApi from "../../api/role";
+import RoleApi from "../../apis/role";
 
 export default {
   mixins: [editMixin],

@@ -37,8 +37,8 @@
 
 <script>
 import editMixin from "../../mixins/edit";
-import UserApi from "../../api/user";
-import RoleApi from "../../api/role";
+import UserApi from "../../apis/user";
+import RoleApi from "../../apis/role";
 
 export default {
   mixins: [editMixin],

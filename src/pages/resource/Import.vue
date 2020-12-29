@@ -23,7 +23,7 @@
 
 <script>
 import editMixin from "../../mixins/edit";
-import ResourceApi from "../../api/resource";
+import ResourceApi from "../../apis/resource";
 
 export default {
   mixins: [editMixin],
