@@ -26,12 +26,15 @@ class AclManager {
         return _pending;
     }
 
-    verify(acl, scope) {
+    verify(acl, scope = 'all') {
         let res = false;
         if (typeof acl === 'string') {
             res = this.permission.has(acl);
         } else {
             res = scope === 'one' ? !!acl.find(_ => this.permission.has(_)) : !acl.find(_ => this.permission.has(_));
+        }
+        if (!res) {
+            console.warn('无权限', acl, scope);
         }
         return res;
     }

@@ -152,7 +152,6 @@ router.beforeEach((to, _from, next) => {
             Auth.check(),
             Acl.check(),
         ]).then(() => {
-            console.log(to);
             if (to.meta && to.meta.acl && !Acl.verify(to.meta.acl)) {
                 next({
                     name: '403'
