@@ -81,8 +81,9 @@ export default {
 .wraper {
   height: 100%;
   background-image: url("~@/assets/login.jpg");
-  background-size: 100% 100%;
+  background-size: cover;
   background-repeat: no-repeat;
+  background-position: center;
 }
 .login {
   &-card {
