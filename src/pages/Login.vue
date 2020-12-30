@@ -55,8 +55,8 @@ export default {
       rules,
       loading: false,
       form: {
-        username: "admin",
-        password: "admin",
+        username: "",
+        password: "",
       },
     };
   },
