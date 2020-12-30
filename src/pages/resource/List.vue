@@ -97,10 +97,10 @@ const columns = [
     title: "发货信息",
     dataIndex: "send_info",
   },
-  {
-    title: "业务员名称",
-    dataIndex: "man_name",
-  },
+  // {
+  //   title: "业务员名称",
+  //   dataIndex: "man_name",
+  // },
   {
     title: "买家昵称",
     dataIndex: "nickname",
