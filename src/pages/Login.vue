@@ -87,7 +87,7 @@ export default {
 .login {
   &-card {
     position: absolute;
-    width: 400px;
+    width: 350px;
     box-sizing: content-box;
     top: 50%;
     right: 150px;
