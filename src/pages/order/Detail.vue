@@ -21,7 +21,7 @@
       </tr>
       <tr>
         <th>游玩地区</th>
-        <td colspan="2">{{ R.order_trip && R.order_trip.area }}</td>
+        <td colspan="2">{{ R.area }}</td>
         <th>路线名称</th>
         <td colspan="2">{{ R.order_trip && R.order_trip.name }}</td>
         <th>vip卡号</th>
@@ -53,7 +53,7 @@
         <th>用餐</th>
         <th>住宿</th>
       </tr>
-      <tr v-for="(item, index) in R.order_trip_info" :key="'trip-' + index">
+      <tr v-for="(item, index) in R.order_t" :key="'trip-' + index">
         <td>{{ item.date }}</td>
         <td colspan="5">{{ item.content }}</td>
         <td>{{ tripMealMap[item.meal] }}</td>

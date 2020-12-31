@@ -33,7 +33,7 @@
             <a-col span="2">D{{ index + 1 }}</a-col>
             <a-col span="20">
               <div class="cus-input-group">
-                <a-date-picker v-model="trip.date" valueFormat="YYYY-MM-DD" />
+                <!-- <a-date-picker v-model="trip.date" valueFormat="YYYY-MM-DD" /> -->
                 <a-select
                   v-model="trip.meal"
                   style="width: 102px"

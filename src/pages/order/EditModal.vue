@@ -33,9 +33,8 @@ export default {
         this.form = {
           id: this.R.id,
           enter_date: this.R.enter_date,
-          name: this.R.name,
           a_id: this.R.a_id,
-          area: this.R.order_trip.area,
+          area: this.R.area,
           up_group_date: this.R.up_group_date,
           off_group_date: this.R.off_group_date,
           vip_card: this.R.vip_card,
@@ -50,7 +49,7 @@ export default {
           leave_day: this.R.leave_day,
           leave_number: this.R.leave_number,
           remark: this.R.remark,
-          trip_info: this.R.order_trip_info,
+          trip_info: this.R.order_t,
           order_staff: this.R.order_staff,
         };
       }
@@ -66,7 +65,7 @@ export default {
       this.form = null;
     },
     submit() {
-      this.$refs.edit.submit(true).then(() => {
+      this.$refs.edit.submit(this.isEdit).then(() => {
         this.$emit("refresh");
         this.close();
       });

@@ -11,7 +11,7 @@
         </td>
         <th class="required">录单人</th>
         <td colspan="2">
-          <a-input v-model="form.name" />
+          {{ form.name }}
         </td>
         <th class="required">代理人</th>
         <td>
@@ -60,19 +60,23 @@
       <tr>
         <th class="required">跟团日期</th>
         <td colspan="2">
-          <!-- <a-date-picker
+          <a-date-picker
             v-model="form.up_group_date"
+            :disabledDate="disabledEndDate"
             valueFormat="YYYY-MM-DD"
-          /> -->
-          {{ form.up_group_date }}
+            @change="formatTripList"
+          />
+          <!-- {{ form.up_group_date }} -->
         </td>
         <th class="required">离团日期</th>
         <td colspan="2">
-          <!-- <a-date-picker
+          <a-date-picker
             v-model="form.off_group_date"
+            :disabledDate="disabledStartDate"
             valueFormat="YYYY-MM-DD"
-          /> -->
-          {{ form.off_group_date }}
+            @change="formatTripList"
+          />
+          <!-- {{ form.off_group_date }} -->
         </td>
         <th class="required">人数</th>
         <td>
@@ -112,63 +116,53 @@
               type="plus"
               title="添加行程"
               class="btn-add"
-              @click="form.trip_info.push({})"
+              @click="addTrip"
             ></a-icon>
           </th>
         </tr>
-        <draggable v-model="form.trip_info" animation="300" tag="tbody">
-          <tr
-            v-for="(item, index) in form.trip_info"
-            :key="'trip-' + index"
-            class="cus-draggable"
-          >
-            <!-- <td v-if="item.t_id">{{ item.date }}</td> -->
-            <td>
-              <a-date-picker
-                v-model="item.date"
-                placeholder="日期"
-                valueFormat="YYYY-MM-DD"
-              />
-            </td>
-            <!-- <td v-if="item.t_id" colspan="5">{{ item.content }}</td> -->
-            <td colspan="5">
-              <a-textarea
-                v-model="item.content"
-                placeholder="具体行程"
-                rows="3"
-              ></a-textarea>
-            </td>
-            <!-- <td v-if="item.t_id">{{ tripMealMap[item.meal] }}</td> -->
-            <td>
-              <a-select v-model="item.meal" placeholder="用餐安排" allowClear>
-                <a-select-option
-                  v-for="(meal, i) in meals"
-                  :key="'meal-' + i"
-                  :value="meal.value"
-                  >{{ meal.label }}</a-select-option
-                >
-              </a-select>
-            </td>
-            <!-- <td v-if="item.t_id">{{ tripStayMap[item.stay] }}</td> -->
-            <td>
-              <a-select v-model="item.stay" placeholder="住宿安排" allowClear>
-                <a-select-option
-                  v-for="(option, i) in stays"
-                  :key="'stay-' + i"
-                  :value="option.value"
-                  >{{ option.label }}</a-select-option
-                >
-              </a-select>
-            </td>
-            <td class="no-border btn-del">
-              <a-icon
-                type="delete"
-                title="删除"
-                @click="form.trip_info.splice(index, 1)"
-              ></a-icon>
-            </td>
-          </tr>
-        </draggable>
+        <tr v-for="(item, index) in form.trip_info" :key="'trip-' + index">
+          <td>{{ item.date }}</td>
+          <!-- <td>
+            <a-date-picker
+              v-model="item.date"
+              placeholder="日期"
+              valueFormat="YYYY-MM-DD"
+            />
+          </td> -->
+          <!-- <td v-if="item.t_id" colspan="5">{{ item.content }}</td> -->
+          <td colspan="5">
+            <a-textarea
+              v-model="item.content"
+              placeholder="具体行程"
+              rows="3"
+            ></a-textarea>
+          </td>
+          <!-- <td v-if="item.t_id">{{ tripMealMap[item.meal] }}</td> -->
+          <td>
+            <a-select v-model="item.meal" placeholder="用餐安排" allowClear>
+              <a-select-option
+                v-for="(meal, i) in meals"
+                :key="'meal-' + i"
+                :value="meal.value"
+                >{{ meal.label }}</a-select-option
+              >
+            </a-select>
+          </td>
+          <!-- <td v-if="item.t_id">{{ tripStayMap[item.stay] }}</td> -->
+          <td>
+            <a-select v-model="item.stay" placeholder="住宿安排" allowClear>
+              <a-select-option
+                v-for="(option, i) in stays"
+                :key="'stay-' + i"
+                :value="option.value"
+                >{{ option.label }}</a-select-option
+              >
+            </a-select>
+          </td>
+          <td class="no-border btn-del">
+            <a-icon type="delete" title="删除" @click="delTrip(index)"></a-icon>
+          </td>
+        </tr>
       </template>
       <tr>
         <th class="required">姓名</th>
@@ -286,14 +280,11 @@
 import TripApi from "../../apis/trip";
 import AgentApi from "../../apis/agent";
 import OrderApi from "../../apis/order";
-import draggable from "vuedraggable";
 import Utils from "../../libs/utils";
 import { tripMealMap, tripStayMap } from "../trip/mapping";
+import * as moment from "moment";
 
 export default {
-  components: {
-    draggable,
-  },
   props: {
     data: Object,
     inModal: {
@@ -314,6 +305,7 @@ export default {
           numbers: 1,
           order_staff: [{}],
           trip_info: [],
+          name: this.$auth.user().name,
         },
         this.data
       ),
@@ -353,21 +345,52 @@ export default {
     tripChange() {
       let trip = this.tripList.find((_) => _.id == this.form.t_id);
       if (trip) {
-        let date = trip.trip_info
-          .map((_) => _.date)
-          .sort((a, b) => (a > b ? 1 : -1));
-        this.form.area = trip.area;
-        this.form.trip_info = trip.trip_info;
-        this.form.up_group_date = date.shift();
-        this.form.off_group_date = date.pop() || this.form.up_group_date;
-      } else {
-        delete this.form.up_group_date;
-        delete this.form.off_group_date;
+        this.form.trip_info = [...trip.trip_info];
+        this.formatTripList();
       }
+    },
+    formatTripList() {
+      let days;
+      if (this.form.up_group_date && this.form.off_group_date) {
+        days = moment(this.form.off_group_date).diff(
+          moment(this.form.up_group_date),
+          "days"
+        );
+        this.form.trip_info.splice(days + 1);
+        if (this.form.trip_info.length < days) {
+          this.form.trip_info = this.form.trip_info.concat(
+            new Array(days - this.form.trip_info.length).fill()
+          );
+        }
+        for (let i = 0; i <= days; i++) {
+          this.form.trip_info[i] = this.form.trip_info[i] || {};
+          this.form.trip_info[i].date = moment(this.form.up_group_date)
+            .add(i, "days")
+            .format("YYYY-MM-DD");
+        }
+      }
+    },
+    addTrip() {
+      if (this.form.off_group_date) {
+        this.form.off_group_date = moment(this.form.off_group_date)
+          .add(1, "days")
+          .format("YYYY-MM-DD");
+      }
+      this.form.trip_info.push({});
+      this.formatTripList();
+    },
+    delTrip(index) {
+      if (this.form.off_group_date) {
+        this.form.off_group_date = moment(this.form.off_group_date)
+          .subtract(1, "days")
+          .format("YYYY-MM-DD");
+      }
+      this.form.trip_info.splice(index, 1);
+      this.formatTripList();
     },
     submit(edit = false) {
       this.loading = true;
-      if (edit) {
+      if (edit === true) {
         return OrderApi.update({ ...this.form })
           .then(() => {
             this.$message.success("保存成功");
@@ -389,6 +412,20 @@ export default {
         order_staff: [{}],
         trip_info: [],
       };
+    },
+    disabledStartDate(e) {
+      if (this.form.up_group_date) {
+        return (
+          e < moment(this.form.up_group_date).endOf("day").subtract("days", 1)
+        );
+      }
+      return false;
+    },
+    disabledEndDate(e) {
+      if (this.form.off_group_date) {
+        return e > moment(this.form.off_group_date).endOf("day");
+      }
+      return false;
     },
   },
 };

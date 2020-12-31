@@ -10,11 +10,7 @@
     </a-descriptions>
     <a-divider></a-divider>
     <a-descriptions :column="1" title="具体行程安排">
-      <a-descriptions-item
-        v-for="(trip, index) in R.trip_info"
-        :key="index"
-        :label="trip.date"
-      >
+      <a-descriptions-item v-for="(trip, index) in R.trip_info" :key="index">
         {{ trip.content }}
       </a-descriptions-item>
     </a-descriptions>
