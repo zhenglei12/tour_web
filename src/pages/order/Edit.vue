@@ -134,7 +134,7 @@
             <a-textarea
               v-model="item.content"
               placeholder="具体行程"
-              rows="3"
+              :autoSize="{ minRows: 1, maxRows: 3 }"
             ></a-textarea>
           </td>
           <!-- <td v-if="item.t_id">{{ tripMealMap[item.meal] }}</td> -->
