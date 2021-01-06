@@ -17,7 +17,7 @@ export default {
         }
     },
     created() {
-        this._getList();
+        this.$nextTick(() => this._getList());
     },
     methods: {
         listChange(e) {
