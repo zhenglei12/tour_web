@@ -91,7 +91,12 @@ export default {
     return {
       condition,
       columns,
+      isService: false,
     };
+  },
+  created() {
+    let user = this.$auth.user();
+    this.isService = !!user.roles.find((_) => _.alias == "staff");
   },
   methods: {
     _getList() {
@@ -102,6 +107,7 @@ export default {
           {
             page: this.collection.page,
             pageSize: this.collection.pageSize,
+            man_name: this.isService ? this.$auth.user().name : undefined,
           },
           this.search
         )

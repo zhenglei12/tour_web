@@ -97,10 +97,10 @@ const columns = [
     title: "发货信息",
     dataIndex: "send_info",
   },
-  // {
-  //   title: "业务员名称",
-  //   dataIndex: "man_name",
-  // },
+  {
+    title: "业务员名称",
+    dataIndex: "man_name",
+  },
   {
     title: "买家昵称",
     dataIndex: "nickname",
@@ -138,7 +138,12 @@ export default {
       // detailVisible: false,
       importVisible: false,
       allotVisible: false,
+      isService: false,
     };
+  },
+  created() {
+    let user = this.$auth.user();
+    this.isService = !!user.roles.find((_) => _.alias == "staff");
   },
   methods: {
     // toDetail(e) {
@@ -163,6 +168,7 @@ export default {
           {
             page: this.collection.page,
             pageSize: this.collection.pageSize,
+            man_name: this.isService ? this.$auth.user().name : undefined,
           },
           this.search
         )
