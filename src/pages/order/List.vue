@@ -223,7 +223,6 @@ export default {
     };
   },
   created() {
-    this.getStatistic();
     let user = this.$auth.user();
     this.isService = !!user.roles.find((_) => _.alias == "staff");
     if (this.isService) {
@@ -260,7 +259,9 @@ export default {
       });
     },
     getStatistic() {
-      OrderApi.statistic().then((res) => {
+      OrderApi.statistic(
+        this.isService ? this.$auth.user().name : this.search.name
+      ).then((res) => {
         this.statistic = res;
       });
     },
@@ -270,6 +271,7 @@ export default {
     },
     _getList() {
       this.collection.loading = true;
+      this.getStatistic();
       OrderApi.list(
         Object.assign(
           {},

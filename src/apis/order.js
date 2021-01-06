@@ -2,7 +2,9 @@ import http from "../libs/http";
 
 export default {
     list: (data) => http.post('api/order/list', data),
-    statistic: () => http.post('api/order/statistics', null, {
+    statistic: (staff_name) => http.post('api/order/statistics', {
+        staff_name
+    }, {
         acl: 'order-statistics',
     }),
     create: (data) => http.post('api/order/add', data),
