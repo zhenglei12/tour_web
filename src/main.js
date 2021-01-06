@@ -52,6 +52,7 @@ Vue.config.errorHandler = (err) => {
 
 import app from './App';
 import router from './router.js';
+Vue.prototype.$navigator = router;
 
 new Vue({
   render: h => h(app),
