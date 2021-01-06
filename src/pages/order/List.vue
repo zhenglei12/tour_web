@@ -34,8 +34,7 @@
       @change="listChange"
     >
       <template slot="user" slot-scope="data">
-        <p>{{ data[0] && data[0].name }}</p>
-        <p>{{ data[0] && data[0].id_crad }}</p>
+        {{ data[0] && data[0].name }}
       </template>
       <template slot="money" slot-scope="data">
         {{
