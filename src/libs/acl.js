@@ -28,6 +28,9 @@ class AclManager {
 
     verify(acl, scope = 'all') {
         let res = false;
+        if (!acl) {
+            return true;
+        }
         if (typeof acl === 'string') {
             res = this.permission.has(acl);
         } else {

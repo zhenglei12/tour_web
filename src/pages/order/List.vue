@@ -9,7 +9,7 @@
       ></list-search>
     </div>
     <div class="cus-table-header">
-      <div class="statistic">
+      <div class="statistic" v-acl="'order-statistics'">
         <template v-if="statistic">
           <span>当月业绩：{{ statistic.month_count }}</span>
           <span>累计业绩：{{ statistic.count }}</span>
@@ -60,7 +60,7 @@
               v-acl="'order-edit'"
               class="edit"
               type="edit"
-              @click="data._visible = true"
+              @click="editRebate(data)"
             ></a-icon>
           </template>
         </div>
@@ -264,6 +264,10 @@ export default {
         this.statistic = res;
       });
     },
+    editRebate(e) {
+      e._visible = true;
+      this.$forceUpdate();
+    },
     _getList() {
       this.collection.loading = true;
       OrderApi.list(
@@ -291,6 +295,7 @@ export default {
         .then(() => {
           this.$message.success("保存成功");
           e._visible = false;
+          this.$forceUpdate();
         })
         .finally(() => (this.loading = false));
     },
