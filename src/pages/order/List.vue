@@ -46,7 +46,7 @@
       </template>
       <template slot="rebate" slot-scope="data">
         <div class="cus-nowrap">
-          <template v-if="rebateVisible">
+          <template v-if="data._visible">
             <div class="cus-input-group" slot="content">
               <a-input-number v-model="data.rebate_amount" :min="0" />
               <a-button type="primary" :loading="loading" @click="submit(data)"
@@ -60,7 +60,7 @@
               v-acl="'order-edit'"
               class="edit"
               type="edit"
-              @click="rebateVisible = true"
+              @click="data._visible = true"
             ></a-icon>
           </template>
         </div>
@@ -218,7 +218,6 @@ export default {
       statistic: null,
       editVisible: false,
       detailVisible: false,
-      rebateVisible: false,
       loading: false,
       isService: false,
     };
@@ -291,6 +290,7 @@ export default {
       })
         .then(() => {
           this.$message.success("保存成功");
+          e._visible = false;
         })
         .finally(() => (this.loading = false));
     },
