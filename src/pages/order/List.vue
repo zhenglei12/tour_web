@@ -232,7 +232,7 @@ export default {
   methods: {
     toExport(e) {
       OrderApi.export(e.id).then((res) => {
-        Utils.export(res, `订单-${e.ordersn}`).then(() =>
+        Utils.export(res, `${e.order_staff[0].name}-${e.enter_date}`).then(() =>
           this.$message.success("导出成功")
         );
       });
@@ -260,7 +260,9 @@ export default {
     },
     getStatistic() {
       OrderApi.statistic(
-        this.isService ? this.$auth.user().name : this.search.name
+        this.isService
+          ? this.$auth.user().name
+          : this.search && this.search.name
       ).then((res) => {
         this.statistic = res;
       });
