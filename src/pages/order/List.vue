@@ -220,10 +220,16 @@ export default {
       detailVisible: false,
       rebateVisible: false,
       loading: false,
+      isService: false,
     };
   },
   created() {
     this.getStatistic();
+    let user = this.$auth.user();
+    this.isService = !!user.roles.find((_) => _.alias == "staff");
+    if (this.isService) {
+      this.condition = this.condition.filter((_) => _.key != "name");
+    }
   },
   methods: {
     toExport(e) {
@@ -267,6 +273,7 @@ export default {
           {
             page: this.collection.page,
             pageSize: this.collection.pageSize,
+            name: this.isService ? this.$auth.user().name : undefined,
           },
           this.search
         )

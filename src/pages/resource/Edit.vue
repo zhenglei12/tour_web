@@ -25,9 +25,6 @@
       <a-form-model-item label="发货信息" required prop="send_info">
         <a-input v-model="form.send_info" allow-clear />
       </a-form-model-item>
-      <a-form-model-item label="业务员名称" prop="man_name">
-        <a-input v-model="form.man_name" allow-clear />
-      </a-form-model-item>
       <a-form-model-item label="买家昵称" required prop="nickname">
         <a-input v-model="form.nickname" allow-clear />
       </a-form-model-item>
@@ -56,11 +53,14 @@ export default {
           phone: this.R.phone,
           address: this.R.address,
           send_info: this.R.send_info,
-          man_name: this.R.man_name,
           nickname: this.R.nickname,
         };
       }
     },
+  },
+  created() {
+    let user = this.$auth.user();
+    this.isService = !!user.roles.find((_) => _.alias == "staff");
   },
   computed: {
     title() {
@@ -79,6 +79,9 @@ export default {
           })
           .finally(() => (this.loading = false));
       } else {
+        this.form.man_name = this.isService
+          ? this.$auth.user().name
+          : undefined;
         return ResourceApi.create({ ...this.form })
           .then((res) => {
             this.$message.success("保存成功");

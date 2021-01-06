@@ -14,7 +14,20 @@
       :wrapper-col="{ span: 18 }"
     >
       <a-form-model-item label="业务员名称" required prop="man_name">
-        <a-input v-model="form.man_name" allow-clear />
+        <!-- <a-input v-model="form.man_name" allow-clear /> -->
+        <a-select
+          v-model="form.man_name"
+          allowClear
+          :dropdownMatchSelectWidth="false"
+        >
+          <a-select-option
+            v-for="(option, index) in allUser"
+            :key="index"
+            :value="option.name"
+          >
+            {{ option.name }}
+          </a-select-option>
+        </a-select>
       </a-form-model-item>
       <a-form-model-item label="条数" required prop="row">
         <a-input v-model="form.row" allow-clear />
@@ -26,6 +39,7 @@
 <script>
 import editMixin from "../../mixins/edit";
 import ResourceApi from "../../apis/resource";
+import PublicApi from "../../apis/public";
 
 export default {
   mixins: [editMixin],
@@ -33,6 +47,7 @@ export default {
     return {
       loading: false,
       form: {},
+      allUser: [],
     };
   },
   watch: {
@@ -44,6 +59,11 @@ export default {
         };
       }
     },
+  },
+  created() {
+    PublicApi.roleUserList("staff").then((res) => {
+      this.allUser = res.list;
+    });
   },
   methods: {
     submit() {
