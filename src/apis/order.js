@@ -25,4 +25,5 @@ export default {
         id,
         status: 1,
     }),
+    rebate: (data) => http.post('api/order/edit', data),
 }

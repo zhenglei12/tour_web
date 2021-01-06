@@ -32,6 +32,7 @@ export default {
       if (e && this.isEdit) {
         this.form = {
           id: this.R.id,
+          name: this.R.name,
           enter_date: this.R.enter_date,
           a_id: this.R.a_id,
           area: this.R.area,

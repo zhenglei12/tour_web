@@ -34,7 +34,36 @@
       @change="listChange"
     >
       <template slot="user" slot-scope="data">
-        {{ data.map((_) => _.name).join("、") }}
+        <p>{{ data[0] && data[0].name }}</p>
+        <p>{{ data[0] && data[0].id_crad }}</p>
+      </template>
+      <template slot="money" slot-scope="data">
+        {{
+          (
+            parseFloat(data.tour_fee_amount) + parseFloat(data.rebate_amount)
+          ).toFixed(2)
+        }}
+      </template>
+      <template slot="rebate" slot-scope="data">
+        <div class="cus-nowrap">
+          <template v-if="rebateVisible">
+            <div class="cus-input-group" slot="content">
+              <a-input-number v-model="data.rebate_amount" :min="0" />
+              <a-button type="primary" :loading="loading" @click="submit(data)"
+                >确定</a-button
+              >
+            </div>
+          </template>
+          <template v-else>
+            <span>{{ data.rebate_amount }}</span>
+            <a-icon
+              v-acl="'order-edit'"
+              class="edit"
+              type="edit"
+              @click="rebateVisible = true"
+            ></a-icon>
+          </template>
+        </div>
       </template>
       <template slot="status" slot-scope="data">
         {{ orderStatusMap[data] }}
@@ -121,12 +150,16 @@ const columns = [
     dataIndex: "off_group_date",
   },
   {
+    title: "盈利",
+    scopedSlots: { customRender: "money" },
+  },
+  {
     title: "总团费",
     dataIndex: "tour_fee_amount",
   },
   {
     title: "返利",
-    dataIndex: "rebate_amount",
+    scopedSlots: { customRender: "rebate" },
   },
   {
     title: "游客数",
@@ -185,6 +218,8 @@ export default {
       statistic: null,
       editVisible: false,
       detailVisible: false,
+      rebateVisible: false,
+      loading: false,
     };
   },
   created() {
@@ -241,6 +276,17 @@ export default {
         this.collection.loading = false;
       });
     },
+    submit(e) {
+      this.loading = true;
+      OrderApi.rebate({
+        id: e.id,
+        rebate_amount: e.rebate_amount,
+      })
+        .then(() => {
+          this.$message.success("保存成功");
+        })
+        .finally(() => (this.loading = false));
+    },
   },
 };
 </script>
@@ -253,5 +299,11 @@ export default {
   span:first-of-type {
     margin-right: 50px;
   }
+}
+
+.edit {
+  margin-left: 10px;
+  color: #1890ff;
+  cursor: pointer;
 }
 </style>

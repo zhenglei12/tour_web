@@ -182,11 +182,16 @@
           <a-input v-model="item.phone" placeholder="联系号码" />
         </td>
         <td>
-          <a-input v-model="item.type" placeholder="类型" />
+          <a-select v-model="item.type" placeholder="类型" allowClear>
+            <a-select-option
+              v-for="(option, i) in types"
+              :key="'type-' + i"
+              :value="option.label"
+              >{{ option.label }}</a-select-option
+            >
+          </a-select>
         </td>
-        <td>
-          <a-input v-model="item.card_type" placeholder="证件" />
-        </td>
+        <td>身份证</td>
       </tr>
       <tr>
         <th colspan="8">机票信息</th>
@@ -281,7 +286,7 @@ import TripApi from "../../apis/trip";
 import AgentApi from "../../apis/agent";
 import OrderApi from "../../apis/order";
 import Utils from "../../libs/utils";
-import { tripMealMap, tripStayMap } from "../trip/mapping";
+import { tripMealMap, tripStayMap, staffTypeMap } from "../trip/mapping";
 import * as moment from "moment";
 
 export default {
@@ -298,6 +303,7 @@ export default {
       tripStayMap,
       meals: Utils.mapToArray(tripMealMap),
       stays: Utils.mapToArray(tripStayMap),
+      types: Utils.mapToArray(staffTypeMap),
       loading: false,
       form: Object.assign(
         {},
@@ -390,6 +396,9 @@ export default {
     },
     submit(edit = false) {
       this.loading = true;
+      this.form.order_staff.forEach((_) => {
+        _.card_type = "身份证";
+      });
       if (edit === true) {
         return OrderApi.update({ ...this.form })
           .then(() => {

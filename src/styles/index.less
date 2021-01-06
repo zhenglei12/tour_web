@@ -21,6 +21,8 @@
     }
 
     &>*:not(:first-child) {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
 
         /deep/ input,
         /deep/ .ant-select-selection {
@@ -31,6 +33,8 @@
 
     &>*:not(:last-child) {
         margin-right: -1px;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
 
         /deep/ input,
         /deep/ .ant-select-selection {
