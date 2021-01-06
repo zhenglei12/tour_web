@@ -5,9 +5,9 @@ export default {
     statistic: () => http.post('api/order/statistics'),
     create: (data) => http.post('api/order/add', data),
     update: (data) => http.post('api/order/update', data),
-    // remove: (id) => http.post('api/order/delete', {
-    //     id
-    // }),
+    remove: (id) => http.post('api/order/delete', {
+        id
+    }),
     detail: (id) => http.get('api/order/detail', {
         id
     }),

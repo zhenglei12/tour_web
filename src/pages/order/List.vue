@@ -80,12 +80,12 @@
           </template>
           <template v-acl="'order-exports'">
             <a-icon type="export" title="导出" @click="toExport(data)" />
+            <a-divider type="vertical"></a-divider>
           </template>
         </div>
-        <!-- <a-divider type="vertical"></a-divider>
         <a-popconfirm title="确认删除？" @confirm="toDelete(data.id)">
           <a-icon type="delete" title="删除" />
-        </a-popconfirm> -->
+        </a-popconfirm>
       </template>
     </a-table>
 
@@ -254,12 +254,12 @@ export default {
         this.editVisible = true;
       }
     },
-    // toDelete(e) {
-    //   OrderApi.remove(e).then(() => {
-    //     this.$message.success("操作成功");
-    //     this._getList();
-    //   });
-    // },
+    toDelete(e) {
+      OrderApi.remove(e).then(() => {
+        this.$message.success("操作成功");
+        this._getList();
+      });
+    },
     getStatistic() {
       OrderApi.statistic().then((res) => {
         this.statistic = res;
