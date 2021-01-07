@@ -69,18 +69,18 @@
       </template>
       <template slot="operate" slot-scope="data">
         <div class="cus-nowrap">
-          <template v-acl="'order-update'">
+          <span v-acl="'order-update'">
             <a-icon type="edit" title="编辑" @click="toEdit(data.id)" />
             <a-divider type="vertical"></a-divider>
-          </template>
-          <template v-acl="'order-detail'">
+          </span>
+          <span v-acl="'order-detail'">
             <a-icon type="eye" title="详情" @click="toDetail(data.id)" />
             <a-divider type="vertical"></a-divider>
-          </template>
-          <template v-acl="'order-exports'">
+          </span>
+          <span v-acl="'order-exports'">
             <a-icon type="export" title="导出" @click="toExport(data)" />
             <a-divider type="vertical"></a-divider>
-          </template>
+          </span>
         </div>
         <a-popconfirm title="确认删除？" @confirm="toDelete(data.id)">
           <a-icon type="delete" title="删除" />

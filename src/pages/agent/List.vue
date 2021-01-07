@@ -25,23 +25,23 @@
       @change="listChange"
     >
       <template slot="operate" slot-scope="data">
-        <template v-acl="'agent-update'">
+        <span v-acl="'agent-update'">
           <a-icon type="edit" title="编辑" @click="toEdit(data)" />
           <a-divider type="vertical"></a-divider>
-        </template>
-        <template v-acl="'agent-detail'">
+        </span>
+        <span v-acl="'agent-detail'">
           <a-icon type="eye" title="详情" @click="toDetail(data)" />
           <a-divider type="vertical"></a-divider>
-        </template>
-        <template v-acl="'agent-order.list'">
+        </span>
+        <span v-acl="'agent-order.list'">
           <a-icon type="book" title="查看订单" @click="toOrder(data)" />
           <a-divider type="vertical"></a-divider>
-        </template>
-        <template v-acl="'agent-delete'">
+        </span>
+        <span v-acl="'agent-delete'">
           <a-popconfirm title="确认删除？" @confirm="toDelete(data.id)">
             <a-icon type="delete" title="删除" />
           </a-popconfirm>
-        </template>
+        </span>
       </template>
     </a-table>
 

@@ -25,19 +25,19 @@
       @change="listChange"
     >
       <template slot="operate" slot-scope="data">
-        <template v-acl="'trip-update'">
+        <span v-acl="'trip-update'">
           <a-icon type="edit" title="编辑" @click="toEdit(data)" />
           <a-divider type="vertical"></a-divider>
-        </template>
-        <template v-acl="'trip-detail'">
+        </span>
+        <span v-acl="'trip-detail'">
           <a-icon type="eye" title="详情" @click="toDetail(data)" />
           <a-divider type="vertical"></a-divider>
-        </template>
-        <template v-acl="'trip-delete'">
+        </span>
+        <span v-acl="'trip-delete'">
           <a-popconfirm title="确认删除？" @confirm="toDelete(data.id)">
             <a-icon type="delete" title="删除" />
           </a-popconfirm>
-        </template>
+        </span>
       </template>
     </a-table>
 

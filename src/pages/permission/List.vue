@@ -25,17 +25,17 @@
       @change="listChange"
     >
       <template slot="operate" slot-scope="data">
-        <template v-acl="'permission-update'">
+        <span v-acl="'permission-update'">
           <a-icon type="edit" title="编辑" @click="toEdit(data)" />
           <a-divider type="vertical"></a-divider>
-        </template>
+        </span>
         <!-- <a-divider type="vertical"></a-divider>
         <a-icon type="eye" title="详情" @click="toDetail(data)" /> -->
-        <template v-acl="'permission-delete'">
+        <span v-acl="'permission-delete'">
           <a-popconfirm title="确认删除？" @confirm="toDelete(data.id)">
             <a-icon type="delete" title="删除" />
           </a-popconfirm>
-        </template>
+        </span>
       </template>
     </a-table>
 

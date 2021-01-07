@@ -25,23 +25,23 @@
       @change="listChange"
     >
       <template slot="operate" slot-scope="data">
-        <template v-acl="'role-update'">
+        <span v-acl="'role-update'">
           <a-icon type="edit" title="编辑" @click="toEdit(data)" />
           <a-divider type="vertical"></a-divider>
-        </template>
+        </span>
         <!-- <template v-acl="'role-detail'">
           <a-icon type="eye" title="详情" @click="toDetail(data)" />
           <a-divider type="vertical"></a-divider>
         </template> -->
-        <template v-acl="'role-add.permission'">
+        <span v-acl="'role-add.permission'">
           <a-icon type="api" title="关联权限" @click="toManager(data.id)" />
           <a-divider type="vertical"></a-divider>
-        </template>
-        <template v-acl="'role-delete'">
+        </span>
+        <span v-acl="'role-delete'">
           <a-popconfirm title="确认删除？" @confirm="toDelete(data.id)">
             <a-icon type="delete" title="删除" />
           </a-popconfirm>
-        </template>
+        </span>
       </template>
     </a-table>
 

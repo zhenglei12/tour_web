@@ -106,10 +106,10 @@
       <a-button v-acl="'order-exports'" type="dashed" @click="toExport"
         >导出</a-button
       >
-      <template v-acl="'order-audit'" v-if="R.status == -1">
+      <span v-acl="'order-audit'" v-if="R.status == -1">
         <a-button type="danger" @click="toReject">驳回</a-button>
         <a-button type="primary" @click="toPass">通过</a-button>
-      </template>
+      </span>
     </div>
   </a-drawer>
 </template>
